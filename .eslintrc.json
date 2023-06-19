@@ -4,8 +4,7 @@
         "node": true
     },
     "extends": [
-        "standard-with-typescript", 
-        "prettier"
+        "standard-with-typescript"
     ],
     "parserOptions": {
         "ecmaVersion": "latest",
@@ -13,6 +12,13 @@
         "project": "./tsconfig.json"
     },
     "rules": {
-        "@typescript-eslint/no-floating-promises": "off"
+        "@typescript-eslint/no-floating-promises": "off",
+        "@typescript-eslint/return-await": "off",
+        "@typescript-eslint/naming-convention": "off",
+        "@typescript-eslint/strict-boolean-expressions": "off",
+        "@typescript-eslint/no-useless-constructor": "off",
+        "@typescript-eslint/space-before-function-paren": "off",
+        "@typescript-eslint/method-signature-style": "off",
+        "@typescript-eslint/consistent-type-exports": "off"
     }
 }
