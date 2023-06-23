@@ -4,6 +4,8 @@ import { InMemoryCheckInsRepository } from '@/repositories/checkin/in_memory_che
 import { type CheckInsRepository } from '@/repositories/checkin/checkins_repository'
 import { InMemoryGymsRepository } from '@/repositories/gym/in_memory_gyms_repository'
 import { Decimal } from '@prisma/client/runtime'
+import { MaxDistanceError } from '@/errors/max_distance_error'
+import { MaxNumberOfCheckInsError } from '@/errors/max_number_of_check_ins_error'
 
 let checkInRepository: CheckInsRepository
 let gymsRepository: InMemoryGymsRepository
@@ -11,13 +13,13 @@ let gymsRepository: InMemoryGymsRepository
 let sut: CheckInUseCase
 
 describe('Check In UseCase', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     checkInRepository = new InMemoryCheckInsRepository()
     gymsRepository = new InMemoryGymsRepository()
     // system under test
     sut = new CheckInUseCase(checkInRepository, gymsRepository)
 
-    gymsRepository.gyms.push({
+    await gymsRepository.create({
       id: 'any_gym',
       description: '',
       latitude: new Decimal(-22.8585935),
@@ -48,8 +50,8 @@ describe('Check In UseCase', () => {
     const gym = await gymsRepository.create({
       id: 'any_gym2',
       description: '',
-      latitude: new Decimal(-22.8610841),
-      longitude: new Decimal(-47.2169174),
+      latitude: -22.8610841,
+      longitude: -47.2169174,
       phone: '',
       title: 'Node Gym'
     })
@@ -59,7 +61,7 @@ describe('Check In UseCase', () => {
       gymId: gym.id,
       userLatitude: -22.8585935,
       userLogintude: -47.2240132
-    })).rejects.toBeInstanceOf(Error)
+    })).rejects.toBeInstanceOf(MaxDistanceError)
   })
 
   it('should not be able to check in twice in the same day', async () => {
@@ -78,7 +80,7 @@ describe('Check In UseCase', () => {
       gymId: 'any_gym',
       userLatitude: -22.8585935,
       userLogintude: -47.2240132
-    })).rejects.toBeInstanceOf(Error)
+    })).rejects.toBeInstanceOf(MaxNumberOfCheckInsError)
   })
 
   it('should be able to check in twice but in different days', async () => {

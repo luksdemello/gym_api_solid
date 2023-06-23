@@ -1,7 +1,6 @@
-import { type Prisma, type Gym } from '@prisma/client'
+import { Prisma, type Gym } from '@prisma/client'
 import { type GymsRepository } from './gyms_repository'
 import { randomUUID } from 'crypto'
-import { type Decimal } from '@prisma/client/runtime'
 
 class InMemoryGymsRepository implements GymsRepository {
   gyms: Gym[] = []
@@ -14,12 +13,12 @@ class InMemoryGymsRepository implements GymsRepository {
 
   async create(data: Prisma.GymCreateInput): Promise<Gym> {
     const gym: Gym = {
-      id: randomUUID(),
-      description: data.description ?? '',
-      phone: data.phone ?? '',
+      id: data.id ?? randomUUID(),
+      description: data.description ?? null,
+      phone: data.phone ?? null,
       title: data.title,
-      latitude: data.latitude as Decimal,
-      longitude: data.longitude as Decimal
+      latitude: new Prisma.Decimal(data.latitude as number),
+      longitude: new Prisma.Decimal(data.longitude as number)
     }
 
     this.gyms.push(gym)
