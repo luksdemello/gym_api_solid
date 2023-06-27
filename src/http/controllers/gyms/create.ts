@@ -17,12 +17,8 @@ export async function createGymController (request: FastifyRequest, reply: Fasti
 
   const { title, description, phone, latitude, longitude } = createGymBodySchema.parse(request.body)
 
-  try {
-    const createGymUseCase = makeCreateGymUseCase()
-    await createGymUseCase.execute({ title, description, phone, latitude, longitude })
+  const createGymUseCase = makeCreateGymUseCase()
+  await createGymUseCase.execute({ title, description, phone, latitude, longitude })
 
-    return reply.status(201).send()
-  } catch (error) {
-    return reply.status(500).send()
-  }
+  return reply.status(201).send()
 }

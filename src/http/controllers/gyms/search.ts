@@ -10,12 +10,8 @@ export async function searchController (request: FastifyRequest, reply: FastifyR
 
   const { query, page } = searchGymsQuerySchema.parse(request.query)
 
-  try {
-    const searchGymUseCase = makeSearchGymsUseCase()
-    const { gyms } = await searchGymUseCase.execute({ query, page })
+  const searchGymUseCase = makeSearchGymsUseCase()
+  const { gyms } = await searchGymUseCase.execute({ query, page })
 
-    return reply.status(200).send({ gyms })
-  } catch (error) {
-    return reply.status(500).send()
-  }
+  return reply.status(200).send({ gyms })
 }
