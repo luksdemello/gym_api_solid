@@ -4,10 +4,10 @@ import { makeFeatchNearbyGymsUseCase } from '@/use_cases/factories/make_fetch_ne
 
 export async function nearbyController (request: FastifyRequest, reply: FastifyReply): Promise<FastifyRequest> {
   const nearbyGymsQuerySchema = z.object({
-    latitude: z.number().refine(value => {
+    latitude: z.coerce.number().refine(value => {
       return Math.abs(value) <= 90
     }),
-    longitude: z.number().refine(value => {
+    longitude: z.coerce.number().refine(value => {
       return Math.abs(value) <= 180
     })
   })
