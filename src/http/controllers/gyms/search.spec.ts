@@ -43,6 +43,7 @@ describe('Search Gym (e2e)', () => {
         query: 'Node'
       })
       .set('Authorization', `Bearer ${token as string}`)
+      .send()
 
     expect(response.statusCode).toEqual(200)
     expect(response.body.gyms).toHaveLength(1)
