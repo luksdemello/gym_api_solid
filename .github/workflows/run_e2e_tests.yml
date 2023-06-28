@@ -17,7 +17,7 @@ jobs:
           POSTGRES_PASSWORD:docker
           POSTGRES_DATABASE:gym-api
 
-     steps:
+    steps:
       - uses: actions/checkout@v3
 
       - uses: actions/setup-node@v3
